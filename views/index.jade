@@ -19,7 +19,7 @@ block content
 			input.btn-info(type='submit' name='Avg', value='Avg' onclick="var buttonIndex=1;") 
 			input.btn-info(type='submit' name='StdDev', value='StdDev' onclick="var buttonIndex=2;") 
 			if locals.result
-				span.btn-danger(  style="width: 300px")= result
+				span.btn-success(  style="width: 300px")= result
 		script.
 			function submit( ) {
 				var lstSelect = document.getElementById('lstSelect');
