@@ -10,16 +10,16 @@ block content
 			button.btn-primary(onclick='AutoFill()') AutoFill
 		form(action='/calc',method='post', id="formID" )
 			p
-			select(name="lstSelect", id="lstSelect", size ="5",multiple="multiple")
+			select.btn-primary(name="lstSelect", id="lstSelect", size ="5",multiple="multiple" , style="width: 200px")
 			p
-			input(type='text', name='txt1', id='txt1') 
+			input(type='text', name='txt1', id='txt1' style='max-width:200px') 
 			button.btn-success(onclick='add()' type="button") Add
 			p  
 			input.btn-info(type='submit' name='Sum', value='Sum' onclick="var buttonIndex=0;") 
 			input.btn-info(type='submit' name='Avg', value='Avg' onclick="var buttonIndex=1;") 
 			input.btn-info(type='submit' name='StdDev', value='StdDev' onclick="var buttonIndex=2;") 
 			if locals.result
-				p= result
+				span.btn-danger(  style="width: 300px")= result
 		script.
 			function submit( ) {
 				var lstSelect = document.getElementById('lstSelect');
