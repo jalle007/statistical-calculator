@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  form(action="/about", method="post", enctype="multipart/form-data")
+  p This is the CSV page
+  p
+    select(name = "dropdown")
+      option(value="domain") Domain
+      option(value="test") Test
+      option(value="random") Random
+      option(value="databases") Databases
+  label(for="payload") Select a file to upload:
+  input#payload(type="file" name="myFile" accept="/*")
+  br
+  button#upload Upload

@@ -1,0 +1,31 @@
+﻿extends layout
+
+block content
+	.jumbotron
+		h1 Statistical calculator
+		p
+			button.btn-primary(onclick='editItem()' id='btEdit' name='btEdit') Edit
+			button.btn-danger(onclick='removeItem()') Remove
+			button.btn-danger(onclick='clearAll()') ClearAll
+			button.btn-primary(onclick='AutoFill()') AutoFill
+		form(action='/calc',method='post', id="formID" )
+			p
+			select(name="lstSelect", id="lstSelect", size ="5",multiple="multiple")
+			p
+			input(type='text', name='txt1', id='txt1') 
+			button.btn-success(onclick='add()' type="button") Add
+			p  
+			input.btn-info(type='submit' name='Sum', value='Sum' onclick="var buttonIndex=0;") 
+			input.btn-info(type='submit' name='Avg', value='Avg' onclick="var buttonIndex=1;") 
+			input.btn-info(type='submit' name='StdDev', value='StdDev' onclick="var buttonIndex=2;") 
+			if locals.result
+				p= result
+		script.
+			function submit( ) {
+				var lstSelect = document.getElementById('lstSelect');
+				 $('#lstSelect option').prop('selected', true);
+				 document.getElementById('formID').submit();
+			}
+    
+   
+   
