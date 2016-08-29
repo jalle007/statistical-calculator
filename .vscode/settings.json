@@ -1,0 +1,8 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+    "editor.lineNumbers": false,
+       "editor.quickSuggestionsDelay": 5,
+          "editor.mouseWheelZoom": true,
+             "editor.fontSize": 16,
+                 "editor.insertSpaces": false
+}

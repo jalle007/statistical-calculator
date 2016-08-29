@@ -3,29 +3,114 @@
 block content
 	.jumbotron
 		h1 Statistical calculator
-		p
-			button.btn-primary(onclick='editItem()' id='btEdit' name='btEdit') Edit
-			button.btn-danger(onclick='removeItem()') Remove
-			button.btn-danger(onclick='clearAll()') ClearAll
-			button.btn-primary(onclick='AutoFill()') AutoFill
-		form(action='/calc',method='post', id="formID" )
+		div(ng-app="myApp" ng-controller="myCtrl")
 			p
-			select.btn-primary(name="lstSelect", id="lstSelect", size ="5",multiple="multiple" , style="width: 200px")
-			p
-			input(type='text', name='txt1', id='txt1' style='max-width:200px') 
-			button.btn-success(onclick='add()' type="button") Add
-			p  
-			input.btn-info(type='submit' name='Sum', value='Sum' onclick="var buttonIndex=0;") 
-			input.btn-info(type='submit' name='Avg', value='Avg' onclick="var buttonIndex=1;") 
-			input.btn-info(type='submit' name='StdDev', value='StdDev' onclick="var buttonIndex=2;") 
-			if locals.result
-				span.btn-success(  style="width: 300px")= result
-		script.
-			function submit( ) {
-				var lstSelect = document.getElementById('lstSelect');
-				 $('#lstSelect option').prop('selected', true);
-				 document.getElementById('formID').submit();
-			}
+				button.btn-primary(ng-click='editItem()' id='btEdit' name='btEdit') Edit
+				button.btn-danger(ng-click='removeItem()') Remove
+				button.btn-danger(ng-click='clearAll()') ClearAll
+				button.btn-primary(ng-click='fillArray()') AutoFill
+			form(action='/calc',method='post', id="formID" )
+				p
+				//select.btn-primary(name="lstSelect", id="lstSelect", size ="5",multiple="multiple" , style="width: 200px" ng-model="rndArray" )
+					option(ng-repeat="num in rndArray" ) {{num}}
+				select.btn-primary(name="lstSelect", id="lstSelect", size ="5",multiple="multiple" , style="width: 200px"  ng-click="itemClick()")
+									option(ng-repeat="num in rndArray" value="{{num}}") {{num}}
+				p
+				input(type='text', name='txt1', ng-model="newVal" id='txt1' style='max-width:200px') 
+				button.btn-success(ng-click='addItem()' type="button") Add
+				p  
+				//button.btn-info( type="button"  name='Sum', value='Sum' ng-click='sumClick()') Sum
+				input.btn-info(type='submit' name='Sum', value='Sum' ng-click='selectAll(); $event.stopPropagation();') 
+				input.btn-info(type='submit' name='Avg', value='Avg' ng-click='selectAll(); $event.stopPropagation();') 
+				input.btn-info(type='submit' name='StdDev', value='StdDev' ng-click='selectAll(); $event.stopPropagation();') 
+				if locals.result
+					span.btn-success(  style="width: 300px")= result
+			script.
+				var app = angular.module('myApp', []);
+				function roundDown(number, decimals) {
+					decimals = decimals || 0;
+					return (Math.floor(number * Math.pow(10, decimals)) / Math.pow(10, decimals));
+				  }
+					
+				app.controller('myCtrl', function($scope,$http) {
+						$scope.showMe = !$scope.showMe;
+						$scope.rndArray = [];
+						$scope.show1 = true;
+							$scope.index = 0;
+
+						$scope.$watch('rndArray', function() {
+								console.log(  $scope.rndArray);
+						});
+
+
+						$scope.selectAll =function () {
+								console.log("submitting form ..");
+								var lstSelect = document.getElementById('lstSelect');
+								 $('#lstSelect option').prop('selected', true);
+							//	 document.getElementById('formID').submit();
+							};
+
+						$scope.sumClick2 = function() {
+							$http.post('/calc',  { 'lstSelect' :  $scope.rndArray,'Sum' :  true }).then(function(response) {
+										console.log(  "response:" + response);
+							    }, 
+							function(response) { 
+									console.log(  response);
+							});
+						};
+
+						//itemClick
+						$scope.itemClick = function() {
+						$scope.show1 = false;
+						console.log(  $scope.rndArray);
+						};
+
+						$scope.editItem = function() {
+							var btEdit = document.getElementById("btEdit");
+							var list = document.getElementById("lstSelect");
+							var txt1 = document.getElementById("txt1");
+
+						  if (btEdit.innerHTML == "Edit") {
+								$scope.index =  list.selectedIndex;
+							var item = list.options[$scope.index].text;
+							txt1.value = item;
+							
+							btEdit.innerHTML = 'Save';
+						  } else //Save
+						  {
+							btEdit.innerHTML = 'Edit';
+							
+						 	$scope.rndArray[$scope.index]=$scope.newVal; 
+							$scope.newVal="";
+							console.log( $scope.rndArray);
+						  }
+						};
+
+						//remove Item
+						$scope.removeItem = function() {
+							var list = document.getElementById("lstSelect");
+							var index = list.selectedIndex;
+									  $scope.rndArray.splice(index, 1);
+						};
+
+						$scope.addItem = function() {
+							console.log(  $scope.newVal);
+						  $scope.rndArray.push($scope.newVal);
+							console.log(  $scope.rndArray);
+						};
+
+						$scope.clearAll = function() {
+						 $scope.rndArray = [];
+						};
+
+						$scope.fillArray = function() {
+							$scope.rndArray = [];
+						 for (var i = 0; i < 5; i++) {
+							   $scope.rndArray.push(roundDown(Math.random() * 100, 3));
+						}
+						
+					};
+				});
     
    
    

@@ -1,11 +1,15 @@
 ﻿// statistical functions
 
-  function Sum(params) {
-    return params.reduce(function(a, b) { return parseInt(a, 10) + parseInt(b, 10); });
+function Sum(params) {
+  console.log("params:" + params);
+  if (params == "undefined") return 0;
 
-  }
+ return params.reduce(function (a, b) { return parseInt(a, 10) + parseInt(b, 10); });
+}
 
-  function Avg(params) {
+function Avg(params) {
+  console.log("params:" + params);
+  if (params == "undefined") return 0;
     var a = Sum(params) / params.length;
     return a;
   }
